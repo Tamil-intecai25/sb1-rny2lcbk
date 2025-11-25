@@ -11,8 +11,5 @@
       "src": "/(.*)",
       "dest": "server.js"
     }
-  ],
-  "env": {
-    "JUSPAY_WEBHOOK_SECRET": "@juspay_webhook_secret"
-  }
+  ]
 }
