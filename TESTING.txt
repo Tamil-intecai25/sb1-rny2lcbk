@@ -1,0 +1,91 @@
+=====================================
+JUSPAY WEBHOOK TESTING GUIDE
+=====================================
+
+📦 SETUP
+---------
+1. Start the server:
+   node server.js
+
+
+🧪 TESTING WITH CURL
+---------------------
+
+1. Basic test:
+   curl -X POST http://localhost:3000/webhooks/juspay \
+     -H "Content-Type: application/json" \
+     -d '{"event":"payment.success","order_id":"ORD123","amount":1000}'
+
+2. Test with different content types:
+   curl -X POST http://localhost:3000/webhooks/juspay \
+     -H "Content-Type: text/plain" \
+     -d 'plain text payload'
+
+
+📮 TESTING WITH POSTMAN
+------------------------
+
+1. Create new request:
+   - Method: POST
+   - URL: http://localhost:3000/webhooks/juspay
+
+2. Set Headers:
+   - Content-Type: application/json
+
+3. Set Body (raw JSON):
+   {
+     "event": "payment.success",
+     "order_id": "ORD123",
+     "transaction_id": "TXN456",
+     "amount": 1000,
+     "currency": "INR",
+     "status": "CHARGED"
+   }
+
+4. Send request and check:
+   - Response: 200 OK with {"received": true}
+   - Server logs showing the webhook details
+
+
+🌐 TESTING DEPLOYED SERVER
+---------------------------
+
+Replace "localhost:3000" with your deployed URL:
+
+curl -X POST https://your-domain.com/api/webhooks \
+  -H "Content-Type: application/json" \
+  -d '{"event":"payment.success","order_id":"ORD123"}'
+
+
+💡 COMMON JUSPAY WEBHOOK EVENTS
+--------------------------------
+
+- payment.success
+- payment.failed
+- payment.pending
+- refund.success
+- refund.failed
+- order.created
+- order.updated
+
+
+✅ HEALTH CHECK
+---------------
+
+curl http://localhost:3000/health
+
+Expected response:
+{"status":"ok","timestamp":"2025-11-25T..."}
+
+
+�� TROUBLESHOOTING
+------------------
+
+1. Cannot receive webhooks:
+   - Check firewall rules
+   - Verify server is running on correct port
+   - Ensure POST endpoint is accessible
+
+2. Logs not showing:
+   - Check server console output
+   - Verify request reaches the server
